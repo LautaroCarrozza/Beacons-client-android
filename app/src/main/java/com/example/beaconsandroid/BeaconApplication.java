@@ -1,5 +1,8 @@
 package com.example.beaconsandroid;
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -7,11 +10,15 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.MediaActionSound;
 import android.os.Build;
 import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.View;
 
 import androidx.core.app.NotificationCompat;
 
@@ -25,11 +32,13 @@ import org.altbeacon.beacon.powersave.BackgroundPowerSaver;
 import org.altbeacon.beacon.startup.BootstrapNotifier;
 import org.altbeacon.beacon.startup.RegionBootstrap;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 public class BeaconApplication extends Application implements BootstrapNotifier {
 
@@ -46,9 +55,11 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
     private MonitoringActivity monitoringActivity = null;
     private String cumulativeLog = "";
     private String deviceId;
+    private HttpsUtil httpsUtil;
 
     @Override
     public void onCreate() {
+        httpsUtil = HttpsUtil.getInstance(this);
         deviceId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
 
         super.onCreate();
@@ -62,6 +73,7 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
         );
+
         builder.setContentIntent(pendingIntent);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel("notificationChannel1",
@@ -75,10 +87,6 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
             builder.setChannelId(channel.getId());
         }
         beaconManager.enableForegroundServiceScanning(builder.build(), 456);
-        // For the above foreground scanning service to be useful, you need to disable
-        // JobScheduler-based scans (used on Android 8+) and set a fast background scan
-        // cycle that would otherwise be disallowed by the operating system.
-        //
         beaconManager.setEnableScheduledScanJobs(false);
         beaconManager.setBackgroundBetweenScanPeriod(0);
         beaconManager.setBackgroundScanPeriod(1100);
@@ -117,44 +125,41 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
     @Override
     public void didEnterRegion(Region region) {
         try {
-            HttpsUtil.notifyRegionEntered(region, this, deviceId);
+            this.httpsUtil.notifyRegionEntered(region, deviceId, (response) -> {
+                this.httpsUtil.requestPoi(deviceId, jsonObject -> {
+                    try {
+                        System.out.println(jsonObject.get("title"));
+                        sendNotification(jsonObject.getString("title"), jsonObject.getString("html"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                });
+            });
         } catch (JSONException e) {
             Log.i(TAG, e.toString());
         }
-        // In this example, this class sends a notification to the user whenever a Beacon
-        // matching a Region (defined above) are first seen.
+
         Log.d(TAG, "did enter region.");
         if (!haveDetectedBeaconsSinceBoot) {
             Log.d(TAG, "auto launching BeaconApplication");
 
-            // The very first time since boot that we detect an beacon, we launch the
-            // BeaconApplication
             Intent intent = new Intent(this, MonitoringActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            // Important:  make sure to add android:launchMode="singleInstance" in the manifest
-            // to keep multiple copies of this activity from getting created if the user has
-            // already manually launched the app.
-            this.startActivity(intent);
             haveDetectedBeaconsSinceBoot = true;
         } else {
             if (monitoringActivity != null) {
-                // If the Monitoring Activity is visible, we log info about the beacons we have
-                // seen on its display
                 logToDisplay("I see a beacon again");
             } else {
-                // If we have already seen beacons before, but the monitoring activity is not in
-                // the foreground, we send a notification to the user on subsequent detections.
                 Log.d(TAG, "Sending notification.");
-                sendNotification();
             }
         }
-
 
     }
 
     @Override
     public void didExitRegion(Region region) {
-        HttpsUtil.notifyRegionExit(region, this);
+        this.httpsUtil.notifyRegionExit(region);
         logToDisplay("I no longer see a beacon.");
     }
 
@@ -168,11 +173,11 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
         }
     }
 
-    private void sendNotification() {
+    private void sendNotification(String title, String body) {
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this, "notificationChannel1")
-                        .setContentTitle("Beacon Reference Application")
-                        .setContentText("A beacon is nearby.")
+                        .setContentTitle(title)
+                        .setContentText(body)
                         .setSmallIcon(R.drawable.ic_launcher_foreground);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
@@ -202,6 +207,7 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
     public String getLog() {
         return cumulativeLog;
     }
+
 
 
 }

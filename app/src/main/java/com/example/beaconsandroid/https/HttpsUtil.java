@@ -6,6 +6,8 @@ import android.media.MediaActionSound;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.beaconsandroid.BeaconApplication;
 
@@ -14,15 +16,29 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
+import java.util.function.Consumer;
 
 public class HttpsUtil {
 
-    private static final String baseUrl = "https://7f34a7f8.ngrok.io";
+    private static HttpsUtil instance;
 
-    public static void notifyRegionEntered(Region region, Context context, String deviceId) throws JSONException {
-        new MediaActionSound().play(3);
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+    private RequestQueue requestQueue;
+
+
+    private HttpsUtil(Context context) {
+        this.requestQueue =  Volley.newRequestQueue(context);
         requestQueue.start();
+    }
+
+    public static HttpsUtil getInstance(Context context){
+        if (instance == null)instance = new HttpsUtil(context);
+        return instance;
+    }
+
+    private static final String baseUrl = "https://b3d0ba26.ngrok.io";
+
+    public void notifyRegionEntered(Region region, String deviceId, Consumer<JSONObject> callback) throws JSONException {
+        new MediaActionSound().play(3);
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, baseUrl + "/message", new JSONObject("{\n" +
                 " imei: " + deviceId +
@@ -30,23 +46,18 @@ public class HttpsUtil {
                 ", minor: " + (region.getId3() == null ? 0 : region.getId3()) +
                 ", utcTime: " + new Date().getTime() +
                 ", uuid: " + region.getId1() +
-                "}"), x -> requestPoi(requestQueue,deviceId), System.out::println);
+                "}"), callback::accept, System.out::println);
+
         requestQueue.add(request);
     }
 
-    public static void notifyRegionExit(Region region, BeaconApplication mainActivity) {
+    public void notifyRegionExit(Region region) {
         new MediaActionSound().play(2);
     }
 
-    public static void requestPoi(RequestQueue queue, String deviceId) {
-        try {
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, baseUrl + "/message", new JSONObject("{ " +
-                    " imei: " + deviceId +
-                    "}"), HttpsUtil::launchPoiActivity, System.out::println);
-            queue.add(request);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    public  void requestPoi(String deviceId, Consumer<JSONObject> consumer) {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, baseUrl + "/poi/current/" + deviceId,null, consumer::accept, System.out::println);
+        this.requestQueue.add(request);
     }
 
     private static void launchPoiActivity(JSONObject x) {
