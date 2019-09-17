@@ -10,11 +10,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaActionSound;
 import android.os.Build;
+import android.provider.Settings;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
-import com.example.beaconsandroid.service.LocationService;
+import com.example.beaconsandroid.https.HttpsUtil;
 
 import org.altbeacon.beacon.BeaconManager;
 import org.altbeacon.beacon.BeaconParser;
@@ -23,7 +24,9 @@ import org.altbeacon.beacon.Region;
 import org.altbeacon.beacon.powersave.BackgroundPowerSaver;
 import org.altbeacon.beacon.startup.BootstrapNotifier;
 import org.altbeacon.beacon.startup.RegionBootstrap;
+import org.json.JSONException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -37,15 +40,16 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
             new Region("REGION_1", Identifier.fromUuid(UUID.fromString(REGION_1)), null, null),
             new Region("REGION_2", Identifier.fromUuid(UUID.fromString(REGION_2)), null, null)
     );
-    private LocationService locationService;
-    private RegionBootstrap regionBootstrap;
+    private List<RegionBootstrap> regionBootstraps;
     private BackgroundPowerSaver backgroundPowerSaver;
     private boolean haveDetectedBeaconsSinceBoot = false;
     private MonitoringActivity monitoringActivity = null;
     private String cumulativeLog = "";
+    private String deviceId;
 
     @Override
     public void onCreate() {
+        deviceId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
 
         super.onCreate();
         BeaconManager beaconManager = org.altbeacon.beacon.BeaconManager.getInstanceForApplication(this);
@@ -60,7 +64,7 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
         );
         builder.setContentIntent(pendingIntent);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("My Notification Channel ID",
+            NotificationChannel channel = new NotificationChannel("notificationChannel1",
                     "My Notification Name", NotificationManager.IMPORTANCE_DEFAULT);
             channel.setDescription("My Notification Channel Description");
             NotificationManager notificationManager = (NotificationManager) getSystemService(
@@ -82,31 +86,41 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
         beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
 
         // wake up the app when a beacon is seen
-        Region region = new Region("backgroundRegion",
-                null, null, null);
-        regionBootstrap = new RegionBootstrap(this, region);
-
+        regionBootstraps = new ArrayList<>(regions.size());
+        for (Region r : regions) {
+            regionBootstraps.add(new RegionBootstrap(this, r));
+        }
         // simply constructing this class and holding a reference to it in your custom Application
         // class will automatically cause the BeaconLibrary to save battery whenever the application
         // is not visible.  This reduces bluetooth power usage by about 60%
         backgroundPowerSaver = new BackgroundPowerSaver(this);
 
     }
+
     public void disableMonitoring() {
-        if (regionBootstrap != null) {
-            regionBootstrap.disable();
-            regionBootstrap = null;
+        for (RegionBootstrap regionBootstrap : regionBootstraps) {
+            if (regionBootstrap != null) {
+                regionBootstrap.disable();
+            }
         }
+        regionBootstraps = null;
     }
+
     public void enableMonitoring() {
-        Region region = new Region("backgroundRegion",
-                null, null, null);
-        regionBootstrap = new RegionBootstrap(this, region);
+        regionBootstraps = new ArrayList<>(regions.size());
+        for (Region r : regions) {
+            regionBootstraps.add(new RegionBootstrap(this, r));
+        }
     }
 
 
     @Override
-    public void didEnterRegion(Region arg0) {
+    public void didEnterRegion(Region region) {
+        try {
+            HttpsUtil.notifyRegionEntered(region, this, deviceId);
+        } catch (JSONException e) {
+            Log.i(TAG, e.toString());
+        }
         // In this example, this class sends a notification to the user whenever a Beacon
         // matching a Region (defined above) are first seen.
         Log.d(TAG, "did enter region.");
@@ -126,7 +140,7 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
             if (monitoringActivity != null) {
                 // If the Monitoring Activity is visible, we log info about the beacons we have
                 // seen on its display
-                logToDisplay("I see a beacon again" );
+                logToDisplay("I see a beacon again");
             } else {
                 // If we have already seen beacons before, but the monitoring activity is not in
                 // the foreground, we send a notification to the user on subsequent detections.
@@ -140,26 +154,26 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
 
     @Override
     public void didExitRegion(Region region) {
+        HttpsUtil.notifyRegionExit(region, this);
         logToDisplay("I no longer see a beacon.");
     }
 
     @Override
     public void didDetermineStateForRegion(int state, Region region) {
-        logToDisplay("Current region state is: " + (state == 1 ? "INSIDE" : "OUTSIDE ("+state+")"));
-        if(state == 1){
+        logToDisplay("Current region state is: " + (state == 1 ? "INSIDE" : "OUTSIDE (" + state + ")"));
+        if (state == 1) {
             new MediaActionSound().play(3);
-        }
-        else{
+        } else {
             new MediaActionSound().play(2);
         }
     }
 
     private void sendNotification() {
         NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(this)
+                new NotificationCompat.Builder(this, "notificationChannel1")
                         .setContentTitle("Beacon Reference Application")
-                        .setContentText("An beacon is nearby.")
-                        .setSmallIcon(R.drawable.ic_launcher_background);
+                        .setContentText("A beacon is nearby.")
+                        .setSmallIcon(R.drawable.ic_launcher_foreground);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addNextIntent(new Intent(this, MonitoringActivity.class));
