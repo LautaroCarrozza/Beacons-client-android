@@ -49,6 +49,7 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
             new Region("REGION_1", Identifier.fromUuid(UUID.fromString(REGION_1)), null, null),
             new Region("REGION_2", Identifier.fromUuid(UUID.fromString(REGION_2)), null, null)
     );
+
     private List<RegionBootstrap> regionBootstraps;
     private BackgroundPowerSaver backgroundPowerSaver;
     private boolean haveDetectedBeaconsSinceBoot = false;
@@ -130,6 +131,7 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
                     try {
                         System.out.println(jsonObject.get("title"));
                         sendNotification(jsonObject.getString("title"), jsonObject.getString("html"));
+                        showPoi(jsonObject);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -149,7 +151,7 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
             haveDetectedBeaconsSinceBoot = true;
         } else {
             if (monitoringActivity != null) {
-                logToDisplay("I see a beacon again");
+               // logToDisplay("I see a beacon again");
             } else {
                 Log.d(TAG, "Sending notification.");
             }
@@ -157,15 +159,15 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
 
     }
 
+
     @Override
     public void didExitRegion(Region region) {
         this.httpsUtil.notifyRegionExit(region);
-        logToDisplay("I no longer see a beacon.");
+
     }
 
     @Override
     public void didDetermineStateForRegion(int state, Region region) {
-        logToDisplay("Current region state is: " + (state == 1 ? "INSIDE" : "OUTSIDE (" + state + ")"));
         if (state == 1) {
             new MediaActionSound().play(3);
         } else {
@@ -197,15 +199,14 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
         this.monitoringActivity = activity;
     }
 
-    private void logToDisplay(String line) {
-        cumulativeLog += (line + "\n");
-        if (this.monitoringActivity != null) {
-            this.monitoringActivity.updateLog(cumulativeLog);
-        }
-    }
 
-    public String getLog() {
-        return cumulativeLog;
+
+    private void showPoi(JSONObject jsonObject) {
+        try {
+            this.monitoringActivity.updatePoit(jsonObject.getString("html"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 

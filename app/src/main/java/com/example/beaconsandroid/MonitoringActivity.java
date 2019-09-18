@@ -12,10 +12,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import org.altbeacon.beacon.BeaconConsumer;
 import org.altbeacon.beacon.BeaconManager;
@@ -34,9 +36,11 @@ public class MonitoringActivity extends Activity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_monitoring);
         verifyBluetooth();
+
 
         // Android M Permission check
         if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -84,29 +88,12 @@ public class MonitoringActivity extends Activity  {
         }
     }
 
-    public void onRangingClicked(View view) {
-        Intent myIntent = new Intent(this, RangingActivity.class);
-        this.startActivity(myIntent);
-    }
-    public void onEnableClicked(View view) {
-        BeaconApplication application = ((BeaconApplication) this.getApplicationContext());
-        if (BeaconManager.getInstanceForApplication(this).getMonitoredRegions().size() > 0) {
-            application.disableMonitoring();
-            ((Button)findViewById(R.id.enableButton)).setText("Re-Enable Monitoring");
-        }
-        else {
-            ((Button)findViewById(R.id.enableButton)).setText("Disable Monitoring");
-            application.enableMonitoring();
-        }
-
-    }
 
     @Override
     public void onResume() {
         super.onResume();
         BeaconApplication application = ((BeaconApplication) this.getApplicationContext());
         application.setMonitoringActivity(this);
-        updateLog(application.getLog());
     }
 
     @Override
@@ -153,13 +140,12 @@ public class MonitoringActivity extends Activity  {
 
     }
 
-    public void updateLog(final String log) {
-        runOnUiThread(new Runnable() {
-            public void run() {
-                EditText editText = (EditText)MonitoringActivity.this
-                        .findViewById(R.id.monitoringText);
-                editText.setText(log);
-            }
+
+
+    public void updatePoit(final String poi) {
+        runOnUiThread(() -> {
+            TextView editText = MonitoringActivity.this.findViewById(R.id.poiViewer);
+            editText.setText(Html.fromHtml(poi, Html.FROM_HTML_MODE_COMPACT));
         });
     }
 
