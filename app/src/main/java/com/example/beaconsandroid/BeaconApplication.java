@@ -49,6 +49,7 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
             new Region("REGION_1", Identifier.fromUuid(UUID.fromString(REGION_1)), null, null),
             new Region("REGION_2", Identifier.fromUuid(UUID.fromString(REGION_2)), null, null)
     );
+    private int beaconCount = 0;
 
     private List<RegionBootstrap> regionBootstraps;
     private BackgroundPowerSaver backgroundPowerSaver;
@@ -125,6 +126,7 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
 
     @Override
     public void didEnterRegion(Region region) {
+        beaconCount++;
         try {
             this.httpsUtil.notifyRegionEntered(region, deviceId, (response) -> {
                 this.httpsUtil.requestPoi(deviceId, jsonObject -> {
@@ -162,6 +164,9 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
 
     @Override
     public void didExitRegion(Region region) {
+        beaconCount--;
+        if (beaconCount == 0)
+            showPoi(null);
         this.httpsUtil.notifyRegionExit(region);
 
     }
@@ -202,6 +207,9 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
 
 
     private void showPoi(JSONObject jsonObject) {
+        if (jsonObject == null){
+            this.monitoringActivity.updatePoit("");
+        }
         try {
             this.monitoringActivity.updatePoit(jsonObject.getString("html"));
         } catch (JSONException e) {
