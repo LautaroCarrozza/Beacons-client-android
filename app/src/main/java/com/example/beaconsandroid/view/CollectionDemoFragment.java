@@ -35,4 +35,6 @@ public class CollectionDemoFragment extends Fragment {
         TabLayout tabLayout = view.findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
    }
+
+
 }

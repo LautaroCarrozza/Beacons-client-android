@@ -24,4 +24,12 @@ public class Poi {
     public void setHtmlContent(String htmlContent) {
         this.htmlContent = htmlContent;
     }
+
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof Poi){
+            return ((Poi) obj).getTitle().equals(this.title);
+        }
+        return false;
+    }
 }

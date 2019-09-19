@@ -45,12 +45,7 @@ import java.util.function.Consumer;
 public class BeaconApplication extends Application implements BootstrapNotifier {
 
     protected static final String TAG = "MonitoringActivity";
-    private static final String REGION_1 = "F57D5029-A509-4BC7-A5C0-444F8EB88EEE";
-    private static final String REGION_2 = "2f234454-cf6d-4a0f-adf2-f4911ba9ffa6";
-    private static final List<Region> regions = Arrays.asList(
-            new Region("REGION_1", Identifier.fromUuid(UUID.fromString(REGION_1)), null, null),
-            new Region("REGION_2", Identifier.fromUuid(UUID.fromString(REGION_2)), null, null)
-    );
+    private List<Region> regions = new ArrayList<>();
     private int beaconCount = 0;
 
     private List<RegionBootstrap> regionBootstraps;
@@ -66,6 +61,22 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
     public void onCreate() {
         httpsUtil = HttpsUtil.getInstance(this);
         deviceId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        httpsUtil.requestRegions(jsonArray -> {
+            for(int i=0;i<jsonArray.length();i++){
+                try {
+                    JSONObject beacon = jsonArray.getJSONObject(i);
+                    regions.add(new Region("Beacon " + i, Identifier.parse(beacon.getString("uuid")), null, null));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+            // wake up the app when a beacon is seen
+            regionBootstraps = new ArrayList<>(regions.size());
+            for (Region r : regions) {
+                regionBootstraps.add(new RegionBootstrap(this, r));
+            }
+        });
 
         super.onCreate();
         BeaconManager beaconManager = org.altbeacon.beacon.BeaconManager.getInstanceForApplication(this);
@@ -98,11 +109,6 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
 
         beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
 
-        // wake up the app when a beacon is seen
-        regionBootstraps = new ArrayList<>(regions.size());
-        for (Region r : regions) {
-            regionBootstraps.add(new RegionBootstrap(this, r));
-        }
         // simply constructing this class and holding a reference to it in your custom Application
         // class will automatically cause the BeaconLibrary to save battery whenever the application
         // is not visible.  This reduces bluetooth power usage by about 60%
@@ -206,11 +212,12 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
 
 
     private void showPoi(JSONObject jsonObject, Region region) {
+        removePoi(region);
+
         try {
-            removePoi(region);
             Poi poi = new Poi(jsonObject.getString("title"), jsonObject.getString("html"));
             monitoringActivity.addPoi(poi);
-            activePois.replace(region,poi);
+            activePois.put(region,poi);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -221,6 +228,7 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
         if(oldPoi != null){
             monitoringActivity.removePoi(oldPoi);
         }
+        activePois.remove(region);
     }
 
 

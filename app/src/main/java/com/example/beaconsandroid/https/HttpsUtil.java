@@ -5,6 +5,7 @@ import android.media.MediaActionSound;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
@@ -12,6 +13,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.beaconsandroid.BeaconApplication;
 
 import org.altbeacon.beacon.Region;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,7 +37,7 @@ public class HttpsUtil {
         return instance;
     }
 
-    private static final String baseUrl = "https://b30573fe.ngrok.io";
+    private static final String baseUrl = "https://58c8dddb.ngrok.io";
 
     public void notifyRegionEntered(Region region, String deviceId, Consumer<JSONObject> callback) throws JSONException {
         new MediaActionSound().play(3);
@@ -57,6 +59,11 @@ public class HttpsUtil {
 
     public  void requestPoi(String deviceId, Consumer<JSONObject> consumer) {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, baseUrl + "/poi/current/" + deviceId,null, consumer::accept, System.out::println);
+        this.requestQueue.add(request);
+    }
+
+    public void requestRegions(Consumer<JSONArray> consumer){
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, baseUrl + "/beacons", null, consumer::accept, System.out::println);
         this.requestQueue.add(request);
     }
 

@@ -1,6 +1,8 @@
 package com.example.beaconsandroid.view;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +29,17 @@ public class DemoObjectFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Bundle args = getArguments();
         String text = args.getString(ARG_OBJECT);
-        ((TextView) view.findViewById(android.R.id.text1))
-                .setText(text == null ? "null" : text);
+        TextView textView =  view.findViewById(android.R.id.text1);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            textView.setText(Html.fromHtml(text, Html.FROM_HTML_MODE_COMPACT));
+        } else {
+            textView.setText(Html.fromHtml(text));
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }
