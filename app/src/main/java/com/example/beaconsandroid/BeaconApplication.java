@@ -36,7 +36,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -58,6 +60,7 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
     private String cumulativeLog = "";
     private String deviceId;
     private HttpsUtil httpsUtil;
+    private Map<Region,Poi> activePois = new HashMap<>();
 
     @Override
     public void onCreate() {
@@ -126,14 +129,13 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
 
     @Override
     public void didEnterRegion(Region region) {
-        beaconCount++;
         try {
             this.httpsUtil.notifyRegionEntered(region, deviceId, (response) -> {
                 this.httpsUtil.requestPoi(deviceId, jsonObject -> {
                     try {
                         System.out.println(jsonObject.get("title"));
                         sendNotification(jsonObject.getString("title"), jsonObject.getString("html"));
-                        showPoi(jsonObject);
+                        showPoi(jsonObject,region);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -164,11 +166,8 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
 
     @Override
     public void didExitRegion(Region region) {
-        beaconCount--;
-        if (beaconCount == 0)
-            showPoi(null);
+        removePoi(region);
         this.httpsUtil.notifyRegionExit(region);
-
     }
 
     @Override
@@ -206,14 +205,21 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
 
 
 
-    private void showPoi(JSONObject jsonObject) {
-        if (jsonObject == null){
-            this.monitoringActivity.updatePoit("");
-        }
+    private void showPoi(JSONObject jsonObject, Region region) {
         try {
-            this.monitoringActivity.updatePoit(jsonObject.getString("html"));
+            removePoi(region);
+            Poi poi = new Poi(jsonObject.getString("title"), jsonObject.getString("html"));
+            monitoringActivity.addPoi(poi);
+            activePois.replace(region,poi);
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void removePoi(Region region){
+        Poi oldPoi = activePois.get(region);
+        if(oldPoi != null){
+            monitoringActivity.removePoi(oldPoi);
         }
     }
 

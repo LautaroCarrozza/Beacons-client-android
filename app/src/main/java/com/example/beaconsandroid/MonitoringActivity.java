@@ -3,35 +3,28 @@ package com.example.beaconsandroid;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.text.Html;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import org.altbeacon.beacon.BeaconConsumer;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager.widget.ViewPager;
+
+import com.example.beaconsandroid.view.DemoCollectionPagerAdapter;
+import com.google.android.material.tabs.TabLayout;
+
 import org.altbeacon.beacon.BeaconManager;
-import org.altbeacon.beacon.BeaconParser;
-import org.altbeacon.beacon.MonitorNotifier;
-import org.altbeacon.beacon.Region;
-
-import java.util.Collection;
 
 
-public class MonitoringActivity extends Activity  {
+public class MonitoringActivity extends FragmentActivity {
     protected static final String TAG = "MonitoringActivity";
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
-
+    private DemoCollectionPagerAdapter pager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +53,12 @@ public class MonitoringActivity extends Activity  {
             });
             builder.show();
         }
+        ViewPager viewPager = findViewById(R.id.pager);
+        pager = new DemoCollectionPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(pager);
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        tabLayout.addTab(tabLayout.newTab());
+
     }
 
     @Override
@@ -140,13 +139,12 @@ public class MonitoringActivity extends Activity  {
 
     }
 
-
-
-    public void updatePoit(final String poi) {
-        runOnUiThread(() -> {
-            TextView editText = MonitoringActivity.this.findViewById(R.id.poiViewer);
-            editText.setText(Html.fromHtml(poi, Html.FROM_HTML_MODE_COMPACT));
-        });
+    public void addPoi(Poi poi){
+        pager.addPoi(poi);
     }
+    public void removePoi(Poi poi){
+        pager.removePoi(poi);
+    }
+
 
 }

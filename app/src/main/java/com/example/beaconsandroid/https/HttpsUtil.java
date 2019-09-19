@@ -35,7 +35,7 @@ public class HttpsUtil {
         return instance;
     }
 
-    private static final String baseUrl = "https://28d05c92.ngrok.io";
+    private static final String baseUrl = "https://b30573fe.ngrok.io";
 
     public void notifyRegionEntered(Region region, String deviceId, Consumer<JSONObject> callback) throws JSONException {
         new MediaActionSound().play(3);
