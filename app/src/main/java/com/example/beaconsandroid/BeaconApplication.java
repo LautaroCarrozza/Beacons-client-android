@@ -1,8 +1,5 @@
 package com.example.beaconsandroid;
 
-import android.Manifest;
-import android.annotation.TargetApi;
-import android.app.AlertDialog;
 import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -10,15 +7,11 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.media.MediaActionSound;
 import android.os.Build;
 import android.provider.Settings;
-import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.view.View;
 
 import androidx.core.app.NotificationCompat;
 
@@ -35,16 +28,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-import java.util.function.Consumer;
 
 public class BeaconApplication extends Application implements BootstrapNotifier {
 
     protected static final String TAG = "MonitoringActivity";
+
     private List<Region> regions = new ArrayList<>();
     private int beaconCount = 0;
 
@@ -56,11 +47,14 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
     private String deviceId;
     private HttpsUtil httpsUtil;
     private Map<Region,Poi> activePois = new HashMap<>();
+    private List<Poi> pois = new ArrayList<>();
+
 
     @Override
     public void onCreate() {
         httpsUtil = HttpsUtil.getInstance(this);
         deviceId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+
         httpsUtil.requestRegions(jsonArray -> {
             for(int i=0;i<jsonArray.length();i++){
                 try {
@@ -140,17 +134,30 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
                 this.httpsUtil.requestPoi(deviceId, jsonObject -> {
                     try {
                         System.out.println(jsonObject.get("title"));
-                        sendNotification(jsonObject.getString("title"), jsonObject.getString("html"));
-                        showPoi(jsonObject,region);
+                        Poi poi = new Poi(jsonObject.getString("title"), jsonObject.getString("html"));
+
+                        activePois.put(region, poi);
+
+                        if (!pois.contains(poi))
+                            pois.add(poi);
+
+                        monitoringActivity.updateData(pois);
+
+                        sendNotification(poi.getTitle(), poi.getHtmlContent());
+
+
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
                 });
             });
+
         } catch (JSONException e) {
             Log.i(TAG, e.toString());
         }
+
 
         Log.d(TAG, "did enter region.");
         if (!haveDetectedBeaconsSinceBoot) {
@@ -170,9 +177,15 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
     }
 
 
+
     @Override
     public void didExitRegion(Region region) {
-        removePoi(region);
+
+        Poi poi = activePois.get(region);
+        pois.remove(poi);
+
+        monitoringActivity.updateData(pois);
+
         this.httpsUtil.notifyRegionExit(region);
     }
 
@@ -207,28 +220,6 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
 
     public void setMonitoringActivity(MonitoringActivity activity) {
         this.monitoringActivity = activity;
-    }
-
-
-
-    private void showPoi(JSONObject jsonObject, Region region) {
-        removePoi(region);
-
-        try {
-            Poi poi = new Poi(jsonObject.getString("title"), jsonObject.getString("html"));
-            monitoringActivity.addPoi(poi);
-            activePois.put(region,poi);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void removePoi(Region region){
-        Poi oldPoi = activePois.get(region);
-        if(oldPoi != null){
-            monitoringActivity.removePoi(oldPoi);
-        }
-        activePois.remove(region);
     }
 
 

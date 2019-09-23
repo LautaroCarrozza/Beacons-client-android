@@ -37,7 +37,7 @@ public class HttpsUtil {
         return instance;
     }
 
-    private static final String baseUrl = "https://58c8dddb.ngrok.io";
+    private static final String baseUrl = "https://5524fd16.ngrok.io/";
 
     public void notifyRegionEntered(Region region, String deviceId, Consumer<JSONObject> callback) throws JSONException {
         new MediaActionSound().play(3);
@@ -57,7 +57,7 @@ public class HttpsUtil {
         new MediaActionSound().play(2);
     }
 
-    public  void requestPoi(String deviceId, Consumer<JSONObject> consumer) {
+    public void requestPoi(String deviceId, Consumer<JSONObject> consumer) {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, baseUrl + "/poi/current/" + deviceId,null, consumer::accept, System.out::println);
         this.requestQueue.add(request);
     }
