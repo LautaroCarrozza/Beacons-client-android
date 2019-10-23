@@ -5,31 +5,29 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import androidx.fragment.app.FragmentActivity;
-import androidx.viewpager.widget.ViewPager;
-
-import com.google.android.material.tabs.TabLayout;
-
 import org.altbeacon.beacon.BeaconManager;
-import org.altbeacon.beacon.Region;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
-public class MonitoringActivity extends Activity {
+public class MonitoringActivity extends Activity implements AdapterView.OnItemClickListener {
     protected static final String TAG = "MonitoringActivity";
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
     private ListView listView;
+    private HashMap<String, Poi> poiByBeacon = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +37,11 @@ public class MonitoringActivity extends Activity {
         setContentView(R.layout.activity_monitoring);
         verifyBluetooth();
 
+        BeaconApplication application = ((BeaconApplication) this.getApplicationContext());
+        application.setMonitoringActivity(this);
+
         listView = findViewById(R.id.list_view);
+        listView.setOnItemClickListener(this);
 
         // Android M Permission check
         if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -141,12 +143,34 @@ public class MonitoringActivity extends Activity {
     }
 
     public void updateData(List<Poi> activePois) {
+        poiByBeacon = new HashMap<>();
         List<String> poisTittle = new ArrayList<>();
         for (Poi poi : activePois) {
             poisTittle.add(poi.getTitle());
+            poiByBeacon.put(poi.getTitle(), poi);
         }
+
         listView.setAdapter(new ArrayAdapter<>(MonitoringActivity.this, android.R.layout.simple_list_item_1, poisTittle));
 
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.i("HelloListView", "You clicked Item: " + id + " at position:" + position);
+
+        Poi poi = poiByBeacon.get(parent.getItemAtPosition(position));
+
+        if (poi == null)
+            return;
+
+        // Then you start a new Activity via Intent
+        Intent intent = new Intent();
+        intent.setClass(this, ListItemDetail.class);
+        intent.putExtra("position", position);
+        intent.putExtra("itemcontent", poi.getHtmlContent());
+        intent.putExtra("itemtitle", poi.getTitle());
+        // Or / And
+        intent.putExtra("id", id);
+        startActivity(intent);
+    }
 }

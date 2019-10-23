@@ -42,21 +42,22 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
     private List<RegionBootstrap> regionBootstraps;
     private BackgroundPowerSaver backgroundPowerSaver;
     private boolean haveDetectedBeaconsSinceBoot = false;
-    private MonitoringActivity monitoringActivity = null;
+    private MonitoringActivity monitoringActivity;
     private String cumulativeLog = "";
     private String deviceId;
     private HttpsUtil httpsUtil;
-    private Map<Region,Poi> activePois = new HashMap<>();
+    private Map<Region, Poi> activePois = new HashMap<>();
     private List<Poi> pois = new ArrayList<>();
-
+    private ListItemDetail listItemDetail;
 
     @Override
     public void onCreate() {
         httpsUtil = HttpsUtil.getInstance(this);
         deviceId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
 
+
         httpsUtil.requestRegions(jsonArray -> {
-            for(int i=0;i<jsonArray.length();i++){
+            for (int i = 0; i < jsonArray.length(); i++) {
                 try {
                     JSONObject beacon = jsonArray.getJSONObject(i);
                     regions.add(new Region("Beacon " + i, Identifier.parse(beacon.getString("uuid")), null, null));
@@ -146,7 +147,6 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
                         sendNotification(poi.getTitle(), poi.getHtmlContent());
 
 
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -168,7 +168,7 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
             haveDetectedBeaconsSinceBoot = true;
         } else {
             if (monitoringActivity != null) {
-               // logToDisplay("I see a beacon again");
+                // logToDisplay("I see a beacon again");
             } else {
                 Log.d(TAG, "Sending notification.");
             }
@@ -177,12 +177,14 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
     }
 
 
-
     @Override
     public void didExitRegion(Region region) {
 
         Poi poi = activePois.get(region);
         pois.remove(poi);
+
+        if (listItemDetail != null)
+            listItemDetail.finish();
 
         monitoringActivity.updateData(pois);
 
@@ -223,5 +225,7 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
     }
 
 
-
+    public void setListItemDetail(ListItemDetail listItemDetail) {
+        this.listItemDetail = listItemDetail;
+    }
 }

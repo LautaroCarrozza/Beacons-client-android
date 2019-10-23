@@ -8,24 +8,31 @@
 
     <TextView
         android:id="@+id/content_text"
-        android:layout_width="399dp"
-        android:layout_height="632dp"
+        android:layout_width="375dp"
+        android:layout_height="607dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="2dp"
         android:layout_marginBottom="16dp"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.416"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.562"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tittle_text" />
 
     <TextView
         android:id="@+id/tittle_text"
-        android:layout_width="397dp"
-        android:layout_height="52dp"
+        android:layout_width="375dp"
+        android:layout_height="66dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
         android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/content_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.357"
+        app:layout_constraintHorizontal_bias="0.416"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.516" />
+        app:layout_constraintVertical_bias="0.697" />
 </androidx.constraintlayout.widget.ConstraintLayout>
