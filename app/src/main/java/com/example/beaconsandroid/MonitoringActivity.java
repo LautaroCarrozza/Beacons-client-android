@@ -101,7 +101,7 @@ public class MonitoringActivity extends Activity implements AdapterView.OnItemCl
     @Override
     public void onPause() {
         super.onPause();
-        ((BeaconApplication) this.getApplicationContext()).setMonitoringActivity(null);
+        //((BeaconApplication) this.getApplicationContext()).setMonitoringActivity(null);
     }
 
     private void verifyBluetooth() {

@@ -60,7 +60,10 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
             for (int i = 0; i < jsonArray.length(); i++) {
                 try {
                     JSONObject beacon = jsonArray.getJSONObject(i);
-                    regions.add(new Region("Beacon " + i, Identifier.parse(beacon.getString("uuid")), null, null));
+                    regions.add(new Region("Beacon " + i, Identifier.parse(beacon.getString("uuid")),
+                            Identifier.parse(beacon.getString("major")),
+                            Identifier.parse(beacon.getString("minor"))));
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -74,7 +77,7 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
         });
 
         super.onCreate();
-        BeaconManager beaconManager = org.altbeacon.beacon.BeaconManager.getInstanceForApplication(this);
+        BeaconManager beaconManager = BeaconManager.getInstanceForApplication(this);
 
 
         Notification.Builder builder = new Notification.Builder(this);
@@ -97,6 +100,7 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
             }
             builder.setChannelId(channel.getId());
         }
+
         beaconManager.enableForegroundServiceScanning(builder.build(), 456);
         beaconManager.setEnableScheduledScanJobs(false);
         beaconManager.setBackgroundBetweenScanPeriod(0);
@@ -131,6 +135,7 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
     @Override
     public void didEnterRegion(Region region) {
         try {
+
             this.httpsUtil.notifyRegionEntered(region, deviceId, (response) -> {
                 this.httpsUtil.requestPoi(deviceId, jsonObject -> {
                     try {
@@ -186,7 +191,9 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
         if (listItemDetail != null)
             listItemDetail.finish();
 
-        monitoringActivity.updateData(pois);
+        if (monitoringActivity != null)
+            monitoringActivity.updateData(pois);
+
 
         this.httpsUtil.notifyRegionExit(region);
     }

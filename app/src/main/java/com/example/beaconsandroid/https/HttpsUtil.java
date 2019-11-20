@@ -7,10 +7,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.beaconsandroid.BeaconApplication;
 
 import org.altbeacon.beacon.Region;
 import org.json.JSONArray;
@@ -37,18 +34,17 @@ public class HttpsUtil {
         return instance;
     }
 
-    private static final String baseUrl = "https://1c0dca66.ngrok.io";
+    private static final String baseUrl = "https://3ceae7c5.ngrok.io";
 
     public void notifyRegionEntered(Region region, String deviceId, Consumer<JSONObject> callback) throws JSONException {
         new MediaActionSound().play(3);
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, baseUrl + "/message", new JSONObject("{\n" +
-                " imei: " + deviceId +
-                ", major: "+ (region.getId2() == null ? 0 : region.getId2()) +
-                ", minor: " + (region.getId3() == null ? 0 : region.getId3()) +
-                ", utcTime: " + new Date().getTime() +
-                ", uuid: " + region.getId1() +
-                "}"), callback::accept, System.out::println);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, baseUrl + "/message/" +
+                region.getId1() +
+                "/" + (region.getId3() == null ? 0 : region.getId3()) +
+                "/" + (region.getId2() == null ? 0 : region.getId2()) +
+                "/" + deviceId
+                , null, callback::accept, System.out::println);
 
         requestQueue.add(request);
     }
@@ -63,7 +59,7 @@ public class HttpsUtil {
     }
 
     public void requestRegions(Consumer<JSONArray> consumer){
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, baseUrl + "/beacons", null, consumer::accept, System.out::println);
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, baseUrl + "/beacon", null, consumer::accept, System.out::println);
         this.requestQueue.add(request);
     }
 
