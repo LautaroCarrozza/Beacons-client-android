@@ -1,0 +1,112 @@
+\hypertarget{classcom_1_1example_1_1beaconsandroid_1_1_monitoring_activity}{}\doxysection{com.\+example.\+beaconsandroid.\+Monitoring\+Activity Class Reference}
+\label{classcom_1_1example_1_1beaconsandroid_1_1_monitoring_activity}\index{com.example.beaconsandroid.MonitoringActivity@{com.example.beaconsandroid.MonitoringActivity}}
+Inheritance diagram for com.\+example.\+beaconsandroid.\+Monitoring\+Activity\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.904762cm]{classcom_1_1example_1_1beaconsandroid_1_1_monitoring_activity}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1_monitoring_activity_a5ee276d8eb97ae9910715f05d463de21}{on\+Request\+Permissions\+Result}} (int request\+Code, String permissions\mbox{[}$\,$\mbox{]}, int\mbox{[}$\,$\mbox{]} grant\+Results)
+\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1_monitoring_activity_aa30da12709b6811a5ac6ff36bb01c228}{on\+Resume}} ()
+\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1_monitoring_activity_a9344a5f0d9865e001fa04e1e1da58704}{on\+Pause}} ()
+\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1_monitoring_activity_add41335188db3350c29e627a5d3aee3d}{update\+Data}} (List$<$ \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1_poi}{Poi}} $>$ active\+Pois)
+\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1_monitoring_activity_ac40e2fa461fa3d66157340ae851d394f}{on\+Item\+Click}} (Adapter\+View$<$?$>$ parent, View view, int position, long id)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1_monitoring_activity_a69ec187befe0f2b27ea29ead9284aa77}{on\+Create}} (Bundle saved\+Instance\+State)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classcom_1_1example_1_1beaconsandroid_1_1_monitoring_activity_a4022d1ce716a1caaa9b41e63195875da}\label{classcom_1_1example_1_1beaconsandroid_1_1_monitoring_activity_a4022d1ce716a1caaa9b41e63195875da}} 
+static final String {\bfseries T\+AG} = \char`\"{}Monitoring\+Activity\char`\"{}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classcom_1_1example_1_1beaconsandroid_1_1_monitoring_activity_a69ec187befe0f2b27ea29ead9284aa77}\label{classcom_1_1example_1_1beaconsandroid_1_1_monitoring_activity_a69ec187befe0f2b27ea29ead9284aa77}} 
+\index{com.example.beaconsandroid.MonitoringActivity@{com.example.beaconsandroid.MonitoringActivity}!onCreate@{onCreate}}
+\index{onCreate@{onCreate}!com.example.beaconsandroid.MonitoringActivity@{com.example.beaconsandroid.MonitoringActivity}}
+\doxysubsubsection{\texorpdfstring{onCreate()}{onCreate()}}
+{\footnotesize\ttfamily void com.\+example.\+beaconsandroid.\+Monitoring\+Activity.\+on\+Create (\begin{DoxyParamCaption}\item[{Bundle}]{saved\+Instance\+State }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+Called when activity is starting Initialize \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1_beacon_application}{Beacon\+Application}} Starts app in background Asks for phone permissions 
+\begin{DoxyParams}{Parameters}
+{\em saved\+Instance\+State} & If the activity is being re-\/initialized after previously being shut down then this Bundle contains the data it most recently supplied in \mbox{\hyperlink{}{on\+Save\+Instance\+State}}. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcom_1_1example_1_1beaconsandroid_1_1_monitoring_activity_ac40e2fa461fa3d66157340ae851d394f}\label{classcom_1_1example_1_1beaconsandroid_1_1_monitoring_activity_ac40e2fa461fa3d66157340ae851d394f}} 
+\index{com.example.beaconsandroid.MonitoringActivity@{com.example.beaconsandroid.MonitoringActivity}!onItemClick@{onItemClick}}
+\index{onItemClick@{onItemClick}!com.example.beaconsandroid.MonitoringActivity@{com.example.beaconsandroid.MonitoringActivity}}
+\doxysubsubsection{\texorpdfstring{onItemClick()}{onItemClick()}}
+{\footnotesize\ttfamily void com.\+example.\+beaconsandroid.\+Monitoring\+Activity.\+on\+Item\+Click (\begin{DoxyParamCaption}\item[{Adapter\+View$<$?$>$}]{parent,  }\item[{View}]{view,  }\item[{int}]{position,  }\item[{long}]{id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Callback method to be invoked when an item in this adapter view has been clicked \mbox{\hyperlink{}{List\+Item\+Detail\#on\+Create(\+Bundle)}} and shows html of clicked item. 
+\begin{DoxyParams}{Parameters}
+{\em parent} & The Adapter\+View where the click happened. \\
+\hline
+{\em view} & The view within the Adapter\+View that was clicked (this will be a view provided by the adapter) \\
+\hline
+{\em position} & The position of the view in the adapter. \\
+\hline
+{\em id} & The row id of the item that was clicked. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcom_1_1example_1_1beaconsandroid_1_1_monitoring_activity_a9344a5f0d9865e001fa04e1e1da58704}\label{classcom_1_1example_1_1beaconsandroid_1_1_monitoring_activity_a9344a5f0d9865e001fa04e1e1da58704}} 
+\index{com.example.beaconsandroid.MonitoringActivity@{com.example.beaconsandroid.MonitoringActivity}!onPause@{onPause}}
+\index{onPause@{onPause}!com.example.beaconsandroid.MonitoringActivity@{com.example.beaconsandroid.MonitoringActivity}}
+\doxysubsubsection{\texorpdfstring{onPause()}{onPause()}}
+{\footnotesize\ttfamily void com.\+example.\+beaconsandroid.\+Monitoring\+Activity.\+on\+Pause (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxySeeAlso}{See also}
+Activity\+::on\+Pause() 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{classcom_1_1example_1_1beaconsandroid_1_1_monitoring_activity_a5ee276d8eb97ae9910715f05d463de21}\label{classcom_1_1example_1_1beaconsandroid_1_1_monitoring_activity_a5ee276d8eb97ae9910715f05d463de21}} 
+\index{com.example.beaconsandroid.MonitoringActivity@{com.example.beaconsandroid.MonitoringActivity}!onRequestPermissionsResult@{onRequestPermissionsResult}}
+\index{onRequestPermissionsResult@{onRequestPermissionsResult}!com.example.beaconsandroid.MonitoringActivity@{com.example.beaconsandroid.MonitoringActivity}}
+\doxysubsubsection{\texorpdfstring{onRequestPermissionsResult()}{onRequestPermissionsResult()}}
+{\footnotesize\ttfamily void com.\+example.\+beaconsandroid.\+Monitoring\+Activity.\+on\+Request\+Permissions\+Result (\begin{DoxyParamCaption}\item[{int}]{request\+Code,  }\item[{String}]{permissions\mbox{[}$\,$\mbox{]},  }\item[{int\mbox{[}$\,$\mbox{]}}]{grant\+Results }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Callback for the result from requesting permissions 
+\begin{DoxyParams}{Parameters}
+{\em request\+Code} & The request code passed in \mbox{\hyperlink{}{request\+Permissions(\+String\mbox{[}$\,$\mbox{]}, int)}}. \\
+\hline
+{\em permissions} & The requested permissions. Never null. \\
+\hline
+{\em grant\+Results} & he grant results for the corresponding permissions which is either \mbox{\hyperlink{}{android.\+content.\+pm.\+Package\+Manager\#\+P\+E\+R\+M\+I\+S\+S\+I\+O\+N\+\_\+\+G\+R\+A\+N\+T\+ED}} or \mbox{\hyperlink{}{android.\+content.\+pm.\+Package\+Manager\#\+P\+E\+R\+M\+I\+S\+S\+I\+O\+N\+\_\+\+D\+E\+N\+I\+ED}}. Never null. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcom_1_1example_1_1beaconsandroid_1_1_monitoring_activity_aa30da12709b6811a5ac6ff36bb01c228}\label{classcom_1_1example_1_1beaconsandroid_1_1_monitoring_activity_aa30da12709b6811a5ac6ff36bb01c228}} 
+\index{com.example.beaconsandroid.MonitoringActivity@{com.example.beaconsandroid.MonitoringActivity}!onResume@{onResume}}
+\index{onResume@{onResume}!com.example.beaconsandroid.MonitoringActivity@{com.example.beaconsandroid.MonitoringActivity}}
+\doxysubsubsection{\texorpdfstring{onResume()}{onResume()}}
+{\footnotesize\ttfamily void com.\+example.\+beaconsandroid.\+Monitoring\+Activity.\+on\+Resume (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Passes and set \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1_monitoring_activity}{Monitoring\+Activity}} instance to \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1_beacon_application_a5460810496edc303ab29084451fea625}{Beacon\+Application\#set\+Monitoring\+Activity(\+Monitoring\+Activity)}} \begin{DoxySeeAlso}{See also}
+Activity\+::on\+Resume() 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{classcom_1_1example_1_1beaconsandroid_1_1_monitoring_activity_add41335188db3350c29e627a5d3aee3d}\label{classcom_1_1example_1_1beaconsandroid_1_1_monitoring_activity_add41335188db3350c29e627a5d3aee3d}} 
+\index{com.example.beaconsandroid.MonitoringActivity@{com.example.beaconsandroid.MonitoringActivity}!updateData@{updateData}}
+\index{updateData@{updateData}!com.example.beaconsandroid.MonitoringActivity@{com.example.beaconsandroid.MonitoringActivity}}
+\doxysubsubsection{\texorpdfstring{updateData()}{updateData()}}
+{\footnotesize\ttfamily void com.\+example.\+beaconsandroid.\+Monitoring\+Activity.\+update\+Data (\begin{DoxyParamCaption}\item[{List$<$ \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1_poi}{Poi}} $>$}]{active\+Pois }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Called when active pois is updated. Updates view with active pois. 
+\begin{DoxyParams}{Parameters}
+{\em active\+Pois} & list of actual points of interest in phones radar \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+app/src/main/java/com/example/beaconsandroid/Monitoring\+Activity.\+java\end{DoxyCompactItemize}

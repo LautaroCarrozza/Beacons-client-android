@@ -1,0 +1,94 @@
+\hypertarget{classcom_1_1example_1_1beaconsandroid_1_1_beacon_application}{}\doxysection{com.\+example.\+beaconsandroid.\+Beacon\+Application Class Reference}
+\label{classcom_1_1example_1_1beaconsandroid_1_1_beacon_application}\index{com.example.beaconsandroid.BeaconApplication@{com.example.beaconsandroid.BeaconApplication}}
+Inheritance diagram for com.\+example.\+beaconsandroid.\+Beacon\+Application\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.879195cm]{classcom_1_1example_1_1beaconsandroid_1_1_beacon_application}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1_beacon_application_ae4bbe6deb4b7e9ca1bbc7e32230b7b5f}{on\+Create}} ()
+\item 
+\mbox{\Hypertarget{classcom_1_1example_1_1beaconsandroid_1_1_beacon_application_ad051528cc1c8bcb13ddd3ca846e64e93}\label{classcom_1_1example_1_1beaconsandroid_1_1_beacon_application_ad051528cc1c8bcb13ddd3ca846e64e93}} 
+void {\bfseries disable\+Monitoring} ()
+\item 
+\mbox{\Hypertarget{classcom_1_1example_1_1beaconsandroid_1_1_beacon_application_adcb8f2b63eb9a8d9c2663edcc12f68f2}\label{classcom_1_1example_1_1beaconsandroid_1_1_beacon_application_adcb8f2b63eb9a8d9c2663edcc12f68f2}} 
+void {\bfseries enable\+Monitoring} ()
+\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1_beacon_application_a1c2f9f4f48db69c912b4c44c5e098151}{did\+Enter\+Region}} (Region region)
+\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1_beacon_application_a5fb0e807325c13b4816a7bdc39423acd}{did\+Exit\+Region}} (Region region)
+\item 
+\mbox{\Hypertarget{classcom_1_1example_1_1beaconsandroid_1_1_beacon_application_ad0a6f513d0ef1a1cf67b05736430cd39}\label{classcom_1_1example_1_1beaconsandroid_1_1_beacon_application_ad0a6f513d0ef1a1cf67b05736430cd39}} 
+void {\bfseries did\+Determine\+State\+For\+Region} (int state, Region region)
+\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1_beacon_application_a5460810496edc303ab29084451fea625}{set\+Monitoring\+Activity}} (\mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1_monitoring_activity}{Monitoring\+Activity}} activity)
+\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1_beacon_application_ae07348c3974ec615e1aa650ab716c561}{set\+List\+Item\+Detail}} (\mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1_list_item_detail}{List\+Item\+Detail}} list\+Item\+Detail)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classcom_1_1example_1_1beaconsandroid_1_1_beacon_application_a2fb662e2995acbad5fe4d7eff1d4fd94}\label{classcom_1_1example_1_1beaconsandroid_1_1_beacon_application_a2fb662e2995acbad5fe4d7eff1d4fd94}} 
+static final String {\bfseries T\+AG} = \char`\"{}Monitoring\+Activity\char`\"{}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classcom_1_1example_1_1beaconsandroid_1_1_beacon_application_a1c2f9f4f48db69c912b4c44c5e098151}\label{classcom_1_1example_1_1beaconsandroid_1_1_beacon_application_a1c2f9f4f48db69c912b4c44c5e098151}} 
+\index{com.example.beaconsandroid.BeaconApplication@{com.example.beaconsandroid.BeaconApplication}!didEnterRegion@{didEnterRegion}}
+\index{didEnterRegion@{didEnterRegion}!com.example.beaconsandroid.BeaconApplication@{com.example.beaconsandroid.BeaconApplication}}
+\doxysubsubsection{\texorpdfstring{didEnterRegion()}{didEnterRegion()}}
+{\footnotesize\ttfamily void com.\+example.\+beaconsandroid.\+Beacon\+Application.\+did\+Enter\+Region (\begin{DoxyParamCaption}\item[{Region}]{region }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Called when phone enters a region \mbox{\hyperlink{}{Https\+Util\#notify\+Region\+Entered(\+Region, String, Consumer)}} Request to notify server \mbox{\hyperlink{}{Https\+Util\#request\+Poi(\+String, Consumer)}} Request point of interest from the entered region Sends notification 
+\begin{DoxyParams}{Parameters}
+{\em region} & from a beacon with its identifications \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcom_1_1example_1_1beaconsandroid_1_1_beacon_application_a5fb0e807325c13b4816a7bdc39423acd}\label{classcom_1_1example_1_1beaconsandroid_1_1_beacon_application_a5fb0e807325c13b4816a7bdc39423acd}} 
+\index{com.example.beaconsandroid.BeaconApplication@{com.example.beaconsandroid.BeaconApplication}!didExitRegion@{didExitRegion}}
+\index{didExitRegion@{didExitRegion}!com.example.beaconsandroid.BeaconApplication@{com.example.beaconsandroid.BeaconApplication}}
+\doxysubsubsection{\texorpdfstring{didExitRegion()}{didExitRegion()}}
+{\footnotesize\ttfamily void com.\+example.\+beaconsandroid.\+Beacon\+Application.\+did\+Exit\+Region (\begin{DoxyParamCaption}\item[{Region}]{region }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Called when phone stops seeing a beacon \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1https_1_1_https_util_a2d21dcdf88b8a8b9be1161d85b594ce4}{Https\+Util\#notify\+Region\+Exit(\+Region)}} Request to notify server 
+\begin{DoxyParams}{Parameters}
+{\em region} & from a beacon \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcom_1_1example_1_1beaconsandroid_1_1_beacon_application_ae4bbe6deb4b7e9ca1bbc7e32230b7b5f}\label{classcom_1_1example_1_1beaconsandroid_1_1_beacon_application_ae4bbe6deb4b7e9ca1bbc7e32230b7b5f}} 
+\index{com.example.beaconsandroid.BeaconApplication@{com.example.beaconsandroid.BeaconApplication}!onCreate@{onCreate}}
+\index{onCreate@{onCreate}!com.example.beaconsandroid.BeaconApplication@{com.example.beaconsandroid.BeaconApplication}}
+\doxysubsubsection{\texorpdfstring{onCreate()}{onCreate()}}
+{\footnotesize\ttfamily void com.\+example.\+beaconsandroid.\+Beacon\+Application.\+on\+Create (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Called when activity is starting Creates all needed instances and initializations Calls requests and stores regions Set up the notification Service \mbox{\Hypertarget{classcom_1_1example_1_1beaconsandroid_1_1_beacon_application_ae07348c3974ec615e1aa650ab716c561}\label{classcom_1_1example_1_1beaconsandroid_1_1_beacon_application_ae07348c3974ec615e1aa650ab716c561}} 
+\index{com.example.beaconsandroid.BeaconApplication@{com.example.beaconsandroid.BeaconApplication}!setListItemDetail@{setListItemDetail}}
+\index{setListItemDetail@{setListItemDetail}!com.example.beaconsandroid.BeaconApplication@{com.example.beaconsandroid.BeaconApplication}}
+\doxysubsubsection{\texorpdfstring{setListItemDetail()}{setListItemDetail()}}
+{\footnotesize\ttfamily void com.\+example.\+beaconsandroid.\+Beacon\+Application.\+set\+List\+Item\+Detail (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1_list_item_detail}{List\+Item\+Detail}}}]{list\+Item\+Detail }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Initialize or sets an instance of \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1_list_item_detail}{List\+Item\+Detail}} 
+\begin{DoxyParams}{Parameters}
+{\em list\+Item\+Detail} & \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1_list_item_detail}{List\+Item\+Detail}} instance \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcom_1_1example_1_1beaconsandroid_1_1_beacon_application_a5460810496edc303ab29084451fea625}\label{classcom_1_1example_1_1beaconsandroid_1_1_beacon_application_a5460810496edc303ab29084451fea625}} 
+\index{com.example.beaconsandroid.BeaconApplication@{com.example.beaconsandroid.BeaconApplication}!setMonitoringActivity@{setMonitoringActivity}}
+\index{setMonitoringActivity@{setMonitoringActivity}!com.example.beaconsandroid.BeaconApplication@{com.example.beaconsandroid.BeaconApplication}}
+\doxysubsubsection{\texorpdfstring{setMonitoringActivity()}{setMonitoringActivity()}}
+{\footnotesize\ttfamily void com.\+example.\+beaconsandroid.\+Beacon\+Application.\+set\+Monitoring\+Activity (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1_monitoring_activity}{Monitoring\+Activity}}}]{activity }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Initialize or sets an instance of \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1_monitoring_activity}{Monitoring\+Activity}} 
+\begin{DoxyParams}{Parameters}
+{\em activity} & \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1_monitoring_activity}{Monitoring\+Activity}} instance \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+app/src/main/java/com/example/beaconsandroid/Beacon\+Application.\+java\end{DoxyCompactItemize}

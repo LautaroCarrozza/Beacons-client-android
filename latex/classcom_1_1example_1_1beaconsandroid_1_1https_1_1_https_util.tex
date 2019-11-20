@@ -1,0 +1,95 @@
+\hypertarget{classcom_1_1example_1_1beaconsandroid_1_1https_1_1_https_util}{}\doxysection{com.\+example.\+beaconsandroid.\+https.\+Https\+Util Class Reference}
+\label{classcom_1_1example_1_1beaconsandroid_1_1https_1_1_https_util}\index{com.example.beaconsandroid.https.HttpsUtil@{com.example.beaconsandroid.https.HttpsUtil}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1https_1_1_https_util_a8cbc708e4759fb70fe9b2659008654f7}{notify\+Region\+Entered}} (Region region, String device\+Id, Consumer$<$ J\+S\+O\+N\+Object $>$ callback)  throws J\+S\+O\+N\+Exception 
+\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1https_1_1_https_util_a2d21dcdf88b8a8b9be1161d85b594ce4}{notify\+Region\+Exit}} (Region region)
+\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1https_1_1_https_util_a12a868f7af334f5391c9bad48b301874}{request\+Poi}} (String device\+Id, Consumer$<$ J\+S\+O\+N\+Object $>$ consumer)
+\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1https_1_1_https_util_abeb96cd0be4190cff938488f78938114}{request\+Regions}} (Consumer$<$ J\+S\+O\+N\+Array $>$ consumer)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1https_1_1_https_util}{Https\+Util}} \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1https_1_1_https_util_a7395028258db6bfb507c6cebf29e3d5b}{get\+Instance}} (Context context)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classcom_1_1example_1_1beaconsandroid_1_1https_1_1_https_util_a7395028258db6bfb507c6cebf29e3d5b}\label{classcom_1_1example_1_1beaconsandroid_1_1https_1_1_https_util_a7395028258db6bfb507c6cebf29e3d5b}} 
+\index{com.example.beaconsandroid.https.HttpsUtil@{com.example.beaconsandroid.https.HttpsUtil}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!com.example.beaconsandroid.https.HttpsUtil@{com.example.beaconsandroid.https.HttpsUtil}}
+\doxysubsubsection{\texorpdfstring{getInstance()}{getInstance()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1https_1_1_https_util}{Https\+Util}} com.\+example.\+beaconsandroid.\+https.\+Https\+Util.\+get\+Instance (\begin{DoxyParamCaption}\item[{Context}]{context }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+Returns an \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1https_1_1_https_util}{Https\+Util}} instance or creates a new one if it hasn\textquotesingle{}t been initialized 
+\begin{DoxyParams}{Parameters}
+{\em context} & A for calling \mbox{\hyperlink{}{Https\+Util(\+Context)}} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A started \mbox{\hyperlink{classcom_1_1example_1_1beaconsandroid_1_1https_1_1_https_util}{Https\+Util}} instance 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1example_1_1beaconsandroid_1_1https_1_1_https_util_a8cbc708e4759fb70fe9b2659008654f7}\label{classcom_1_1example_1_1beaconsandroid_1_1https_1_1_https_util_a8cbc708e4759fb70fe9b2659008654f7}} 
+\index{com.example.beaconsandroid.https.HttpsUtil@{com.example.beaconsandroid.https.HttpsUtil}!notifyRegionEntered@{notifyRegionEntered}}
+\index{notifyRegionEntered@{notifyRegionEntered}!com.example.beaconsandroid.https.HttpsUtil@{com.example.beaconsandroid.https.HttpsUtil}}
+\doxysubsubsection{\texorpdfstring{notifyRegionEntered()}{notifyRegionEntered()}}
+{\footnotesize\ttfamily void com.\+example.\+beaconsandroid.\+https.\+Https\+Util.\+notify\+Region\+Entered (\begin{DoxyParamCaption}\item[{Region}]{region,  }\item[{String}]{device\+Id,  }\item[{Consumer$<$ J\+S\+O\+N\+Object $>$}]{callback }\end{DoxyParamCaption}) throws J\+S\+O\+N\+Exception\hspace{0.3cm}{\ttfamily [inline]}}
+
+Send a request notifying when a phone enters a region 
+\begin{DoxyParams}{Parameters}
+{\em region} & from a beacon \\
+\hline
+{\em device\+Id} & phone imei \\
+\hline
+{\em callback} & function for request \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em J\+S\+O\+N\+Exception} & indicates a problem with de J\+S\+ON api \\
+\hline
+\end{DoxyExceptions}
+\mbox{\Hypertarget{classcom_1_1example_1_1beaconsandroid_1_1https_1_1_https_util_a2d21dcdf88b8a8b9be1161d85b594ce4}\label{classcom_1_1example_1_1beaconsandroid_1_1https_1_1_https_util_a2d21dcdf88b8a8b9be1161d85b594ce4}} 
+\index{com.example.beaconsandroid.https.HttpsUtil@{com.example.beaconsandroid.https.HttpsUtil}!notifyRegionExit@{notifyRegionExit}}
+\index{notifyRegionExit@{notifyRegionExit}!com.example.beaconsandroid.https.HttpsUtil@{com.example.beaconsandroid.https.HttpsUtil}}
+\doxysubsubsection{\texorpdfstring{notifyRegionExit()}{notifyRegionExit()}}
+{\footnotesize\ttfamily void com.\+example.\+beaconsandroid.\+https.\+Https\+Util.\+notify\+Region\+Exit (\begin{DoxyParamCaption}\item[{Region}]{region }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Play a sound when a beacon its no longer detected 
+\begin{DoxyParams}{Parameters}
+{\em region} & from a beacon when phone stops detecting it \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcom_1_1example_1_1beaconsandroid_1_1https_1_1_https_util_a12a868f7af334f5391c9bad48b301874}\label{classcom_1_1example_1_1beaconsandroid_1_1https_1_1_https_util_a12a868f7af334f5391c9bad48b301874}} 
+\index{com.example.beaconsandroid.https.HttpsUtil@{com.example.beaconsandroid.https.HttpsUtil}!requestPoi@{requestPoi}}
+\index{requestPoi@{requestPoi}!com.example.beaconsandroid.https.HttpsUtil@{com.example.beaconsandroid.https.HttpsUtil}}
+\doxysubsubsection{\texorpdfstring{requestPoi()}{requestPoi()}}
+{\footnotesize\ttfamily void com.\+example.\+beaconsandroid.\+https.\+Https\+Util.\+request\+Poi (\begin{DoxyParamCaption}\item[{String}]{device\+Id,  }\item[{Consumer$<$ J\+S\+O\+N\+Object $>$}]{consumer }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get Request to server, the points of interests from the regions detected by the phone 
+\begin{DoxyParams}{Parameters}
+{\em device\+Id} & phone id \\
+\hline
+{\em consumer} & json\+Object promise \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcom_1_1example_1_1beaconsandroid_1_1https_1_1_https_util_abeb96cd0be4190cff938488f78938114}\label{classcom_1_1example_1_1beaconsandroid_1_1https_1_1_https_util_abeb96cd0be4190cff938488f78938114}} 
+\index{com.example.beaconsandroid.https.HttpsUtil@{com.example.beaconsandroid.https.HttpsUtil}!requestRegions@{requestRegions}}
+\index{requestRegions@{requestRegions}!com.example.beaconsandroid.https.HttpsUtil@{com.example.beaconsandroid.https.HttpsUtil}}
+\doxysubsubsection{\texorpdfstring{requestRegions()}{requestRegions()}}
+{\footnotesize\ttfamily void com.\+example.\+beaconsandroid.\+https.\+Https\+Util.\+request\+Regions (\begin{DoxyParamCaption}\item[{Consumer$<$ J\+S\+O\+N\+Array $>$}]{consumer }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get Request for regions, to server Region is the area of a beacon with its identifications 
+\begin{DoxyParams}{Parameters}
+{\em consumer} & json\+Object promise \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+app/src/main/java/com/example/beaconsandroid/https/Https\+Util.\+java\end{DoxyCompactItemize}
