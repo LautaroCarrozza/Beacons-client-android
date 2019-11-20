@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class BeaconApplication extends Application implements BootstrapNotifier {
 
@@ -121,6 +122,7 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
 
     }
 
+
     public void disableMonitoring() {
         for (RegionBootstrap regionBootstrap : regionBootstraps) {
             if (regionBootstrap != null) {
@@ -138,6 +140,13 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
     }
 
 
+    /**
+     * Called when phone enters a region
+     * {@link HttpsUtil#notifyRegionEntered(Region, String, Consumer)} Request to notify server
+     * {@link HttpsUtil#requestPoi(String, Consumer)} Request point of interest from the entered region
+     * Sends notification
+     * @param region from a beacon with its identifications
+     */
     @Override
     public void didEnterRegion(Region region) {
         try {
@@ -188,6 +197,11 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
     }
 
 
+    /**
+     * Called when phone stops seeing a beacon
+     * {@link HttpsUtil#notifyRegionExit(Region)} Request to notify server
+     * @param region from a beacon
+     */
     @Override
     public void didExitRegion(Region region) {
 
@@ -204,6 +218,7 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
         this.httpsUtil.notifyRegionExit(region);
     }
 
+    //todo falta este
     @Override
     public void didDetermineStateForRegion(int state, Region region) {
         if (state == 1) {
@@ -213,6 +228,11 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
         }
     }
 
+    /**
+     * Builds and sends phone notification
+     * @param title notification tittle
+     * @param body notification body
+     */
     private void sendNotification(String title, String body) {
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this, "notificationChannel1")
@@ -233,11 +253,19 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
         notificationManager.notify(1, builder.build());
     }
 
+
+    /**
+     * Initialize or sets an instance of {@link MonitoringActivity}
+     * @param activity {@link MonitoringActivity} instance
+     */
     public void setMonitoringActivity(MonitoringActivity activity) {
         this.monitoringActivity = activity;
     }
 
-
+    /**
+     * Initialize or sets an instance of {@link ListItemDetail}
+     * @param listItemDetail {@link ListItemDetail} instance
+     */
     public void setListItemDetail(ListItemDetail listItemDetail) {
         this.listItemDetail = listItemDetail;
     }

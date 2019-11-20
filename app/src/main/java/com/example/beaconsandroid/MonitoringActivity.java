@@ -34,7 +34,9 @@ public class MonitoringActivity extends Activity implements AdapterView.OnItemCl
      * Initialize {@link BeaconApplication}
      * Starts app in background
      * Asks for phone permissions
-     * @param savedInstanceState
+     * @param savedInstanceState If the activity is being re-initialized after
+     *      previously being shut down then this Bundle contains the data it most
+     *      recently supplied in {@link #onSaveInstanceState}.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +73,14 @@ public class MonitoringActivity extends Activity implements AdapterView.OnItemCl
 
     }
 
+    /**
+     * Callback for the result from requesting permissions
+     * @param requestCode The request code passed in {@link #requestPermissions(String[], int)}.
+     * @param permissions The requested permissions. Never null.
+     * @param grantResults he grant results for the corresponding permissions
+     *      which is either {@link android.content.pm.PackageManager#PERMISSION_GRANTED}
+     *      or {@link android.content.pm.PackageManager#PERMISSION_DENIED}. Never null.
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -98,6 +108,10 @@ public class MonitoringActivity extends Activity implements AdapterView.OnItemCl
     }
 
 
+    /**
+     * Passes and set {@link MonitoringActivity} instance to {@link BeaconApplication#setMonitoringActivity(MonitoringActivity)}
+     * @see Activity#onResume()
+     */
     @Override
     public void onResume() {
         super.onResume();
@@ -105,12 +119,18 @@ public class MonitoringActivity extends Activity implements AdapterView.OnItemCl
         application.setMonitoringActivity(this);
     }
 
+    /**
+     * @see Activity#onPause()
+     */
     @Override
     public void onPause() {
         super.onPause();
         //((BeaconApplication) this.getApplicationContext()).setMonitoringActivity(null);
     }
 
+    /**
+     * Checks is bluetooth setting is on. In case its off notifies the user.
+     */
     private void verifyBluetooth() {
 
         try {
@@ -149,6 +169,11 @@ public class MonitoringActivity extends Activity implements AdapterView.OnItemCl
 
     }
 
+    /**
+     * Called when active pois is updated.
+     * Updates view with active pois.
+     * @param activePois list of actual points of interest in phones radar
+     */
     public void updateData(List<Poi> activePois) {
         poiByBeacon = new HashMap<>();
         List<String> poisTittle = new ArrayList<>();
@@ -161,6 +186,15 @@ public class MonitoringActivity extends Activity implements AdapterView.OnItemCl
 
     }
 
+    /**
+     * Callback method to be invoked when an item in this adapter view has been clicked
+     * {@link ListItemDetail#onCreate(Bundle)} and shows html of clicked item.
+     * @param parent The AdapterView where the click happened.
+     * @param view The view within the AdapterView that was clicked (this
+     *             will be a view provided by the adapter)
+     * @param position The position of the view in the adapter.
+     * @param id The row id of the item that was clicked.
+     */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.i("HelloListView", "You clicked Item: " + id + " at position:" + position);

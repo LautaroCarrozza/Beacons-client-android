@@ -17,6 +17,12 @@ public class ListItemDetail extends Activity {
         super.onDestroy();
     }
 
+    /**
+     * Displays html of clicked item.
+     * @param savedInstanceState If the activity is being re-initialized after
+     *      previously being shut down then this Bundle contains the data it most
+     *      recently supplied in {@link #onSaveInstanceState}.
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
