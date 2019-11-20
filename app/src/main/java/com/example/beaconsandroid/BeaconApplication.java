@@ -50,6 +50,12 @@ public class BeaconApplication extends Application implements BootstrapNotifier 
     private List<Poi> pois = new ArrayList<>();
     private ListItemDetail listItemDetail;
 
+    /**
+     * Called when activity is starting
+     * Creates all needed instances and initializations
+     * Calls requests and stores regions
+     * Set up the notification Service
+     */
     @Override
     public void onCreate() {
         httpsUtil = HttpsUtil.getInstance(this);

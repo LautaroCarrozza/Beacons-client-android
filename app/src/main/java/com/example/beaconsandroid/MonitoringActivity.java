@@ -29,6 +29,13 @@ public class MonitoringActivity extends Activity implements AdapterView.OnItemCl
     private ListView listView;
     private HashMap<String, Poi> poiByBeacon = new HashMap<>();
 
+    /**
+     * Called when activity is starting
+     * Initialize {@link BeaconApplication}
+     * Starts app in background
+     * Asks for phone permissions
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
